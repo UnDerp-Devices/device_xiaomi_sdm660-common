@@ -24,9 +24,11 @@ VENDOR=xiaomi
 MY_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
-SUPERIOR_ROOT="$MY_DIR"/../../..
 
-HELPER="$SUPERIOR_ROOT"/vendor/superior/build/tools/extract_utils.sh
+AOSIP_ROOT="$MY_DIR"/../../..
+
+HELPER="$AOSIP_ROOT"/vendor/aosip/build/tools/extract_utils.sh
+
 if [ ! -f "$HELPER" ]; then
     echo "Unable to find helper script at $HELPER"
     exit 1
@@ -91,7 +93,8 @@ function blob_fixup() {
 }
 
 # Initialize the common helper
-setup_vendor "$DEVICE_COMMON" "$VENDOR" "$SUPERIOR_ROOT" true $clean_vendor
+setup_vendor "$DEVICE_COMMON" "$VENDOR" "$AOSIP_ROOT" true $clean_vendor
+
 
 if [ -z "${ONLY_DEVICE}" ] && [ -s "${MY_DIR}/proprietary-files.txt" ]; then
 extract "$MY_DIR"/proprietary-files.txt "$SRC" \
@@ -100,7 +103,8 @@ fi
 
 if [ -z "${ONLY_COMMON}" ] && [ -s "${MY_DIR}/../${DEVICE}/proprietary-files.txt" ]; then
     # Reinitialize the helper for device
-    setup_vendor "$DEVICE" "$VENDOR" "$SUPERIOR_ROOT" false "$CLEAN_VENDOR"
+    setup_vendor "$DEVICE" "$VENDOR" "$AOSIP_ROOT" false "$CLEAN_VENDOR"
+
     extract "$MY_DIR"/../$DEVICE/proprietary-files.txt "$SRC" \
     "${KANG}" --section "${SECTION}"
 fi
